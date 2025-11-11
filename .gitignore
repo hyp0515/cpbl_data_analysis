@@ -1,3 +1,6 @@
 data/event.csv
 data/game.csv
 data/pa.csv
+data/pa_with_stats.csv
+.gitignore
+.gitignore
