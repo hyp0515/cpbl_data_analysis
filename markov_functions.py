@@ -6,6 +6,8 @@ from scipy.ndimage import gaussian_filter
 import tqdm
 from joblib import Parallel, delayed
 from itertools import product
+import ast
+
 
 strike_zone_width = 17.0 + 2.9 # plate width + margin (one ball width on each side)
 strike_zone_height = strike_zone_width * 1.2
@@ -548,3 +550,50 @@ def write_situation(situation_params, x, y, pitchtype, swing, whiff):
     situation_params['swing_last'] = swing
     situation_params['whiff_last'] = whiff
     return situation_params
+
+
+
+def next_pitch(sequence_parent, sequence_to_find, axes, color='C1'):
+    
+    shorten_type = {
+        'fastball': 'F',
+        'offspeed': 'O',
+        'breaking': 'B'
+    }
+    target_sequence = sequence_parent[sequence_parent['sequence_tuple'] == sequence_to_find]
+
+
+    x = [[], [], []]
+    y = [[], [], []]
+    for idx, row in target_sequence.iterrows():
+        
+        coord_sequence = ast.literal_eval(row['pitch_coord_sequence'])
+        
+        x_seq = [coord[0] for coord in coord_sequence]
+        y_seq = [coord[1] for coord in coord_sequence]
+        
+        # Plot individual sequence
+        # if shorten_type[sequence_to_find[0]] == 'F':
+        #     ax = axes[0]
+        # elif shorten_type[sequence_to_find[0]] == 'O':
+        #     ax = axes[1]
+        # else:
+        #     ax = axes[2]
+        # ax.plot(x_seq[0], y_seq[0], marker='o', linestyle='-', alpha=0.2, color=color)
+        if shorten_type[sequence_to_find[0]] == 'F':
+            x[0].append(x_seq[0])
+            y[0].append(y_seq[0])
+        elif shorten_type[sequence_to_find[0]] == 'O':
+            x[1].append(x_seq[0])
+            y[1].append(y_seq[0])
+        else:
+            x[2].append(x_seq[0])
+            y[2].append(y_seq[0])
+
+    # for i in range(3):
+    #     ax = axes[i]
+    #     # plotting_background(ax)
+    #     ax.set_xlim(-35, 35)
+    #     ax.set_ylim(-40, 40)
+    return x, y
+    
