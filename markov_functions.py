@@ -13,9 +13,9 @@ strike_zone_width = 17.0 + 2.9 # plate width + margin (one ball width on each si
 strike_zone_height = strike_zone_width * 1.2
 strike_zone = [-strike_zone_width/2, strike_zone_width/2, -strike_zone_height/2, strike_zone_height/2] # left, right, bottom, top
 
-bins = 14
-x_bound = np.linspace(-40, 40, bins+1, endpoint=True)
-y_bound = np.linspace(-45, 45, bins+1, endpoint=True)
+bins = 8
+x_bound = np.linspace(-20, 20, bins+1, endpoint=True)
+y_bound = np.linspace(-27.5, 27.5, bins+1, endpoint=True)
 x_centers = 0.5 * (x_bound[:-1] + x_bound[1:])
 y_centers = 0.5 * (y_bound[:-1] + y_bound[1:])
 
@@ -29,9 +29,9 @@ def plotting_background(ax):
     ax.add_patch(plt.Rectangle((strike_zone[0], strike_zone[2]), strike_zone_width, strike_zone_height,
                         linewidth=3, edgecolor='k', facecolor='none', linestyle='-', label='Strike Zone'))
     # ax.grid(True)
-    ax.set_xlim(-40, 40)
-    ax.set_ylim(-45, 45)
-    
+    ax.set_xlim(x_bound[0], x_bound[-1])
+    ax.set_ylim(y_bound[0], y_bound[-1])
+
 # define result groups (keep consistent with earlier cells)
 hits = ['1B', '2B', '3B', 'HR', 'IHR', 'H']
 bbs = {'uBB', 'IBB'}
